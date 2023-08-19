@@ -1,25 +1,3 @@
-// This file is part of OpenCV project.
-// It is subject to the license terms in the LICENSE file found in the top-level directory
-// of this distribution and at http://opencv.org/license.html.
-//
-// Copyright (C) 2020 Intel Corporation
-
-#ifndef OPENCV_GAPI_CPU_VIDEO_API_HPP
-#define OPENCV_GAPI_CPU_VIDEO_API_HPP
-
-#include <opencv2/gapi/gkernel.hpp> // GKernelPackage
-
-namespace cv {
-namespace gapi {
-namespace video {
-namespace cpu {
-
-GAPI_EXPORTS GKernelPackage kernels();
-
-} // namespace cpu
-} // namespace video
-} // namespace gapi
-} // namespace cv
-
-
-#endif // OPENCV_GAPI_CPU_VIDEO_API_HPP
+version https://git-lfs.github.com/spec/v1
+oid sha256:f8db31129b92017573f7a0ab1e1b75ef2272ff7b2ac0199c0df9e341d5da88e7
+size 622

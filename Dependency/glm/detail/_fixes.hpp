@@ -1,30 +1,3 @@
-/// @ref core
-/// @file glm/detail/_fixes.hpp
-
-#include <cmath>
-
-//! Workaround for compatibility with other libraries
-#ifdef max
-#undef max
-#endif
-
-//! Workaround for compatibility with other libraries
-#ifdef min
-#undef min
-#endif
-
-//! Workaround for Android
-#ifdef isnan
-#undef isnan
-#endif
-
-//! Workaround for Android
-#ifdef isinf
-#undef isinf
-#endif
-
-//! Workaround for Chrone Native Client
-#ifdef log2
-#undef log2
-#endif
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:3a04482b08f484b4a98f044c0e44379ed683a81ca6dd167a6b0e92c3a1456248
+size 457

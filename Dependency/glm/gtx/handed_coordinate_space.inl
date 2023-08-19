@@ -1,27 +1,3 @@
-/// @ref gtx_handed_coordinate_space
-/// @file glm/gtx/handed_coordinate_space.inl
-
-namespace glm
-{
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER bool rightHanded
-	(
-		tvec3<T, P> const & tangent,
-		tvec3<T, P> const & binormal,
-		tvec3<T, P> const & normal
-	)
-	{
-		return dot(cross(normal, tangent), binormal) > T(0);
-	}
-
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER bool leftHanded
-	(
-		tvec3<T, P> const & tangent,
-		tvec3<T, P> const & binormal,
-		tvec3<T, P> const & normal
-	)
-	{
-		return dot(cross(normal, tangent), binormal) < T(0);
-	}
-}//namespace glm
+version https://git-lfs.github.com/spec/v1
+oid sha256:a07468f3f25c2a6cfcdac53f07bd30557524363f93836e498981a7b157b55615
+size 608

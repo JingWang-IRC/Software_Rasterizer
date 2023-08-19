@@ -1,14 +1,3 @@
-// This file is part of OpenCV project.
-// It is subject to the license terms in the LICENSE file found in the top-level directory
-// of this distribution and at http://opencv.org/license.html.
-//
-// Copyright (C) 2019 Intel Corporation
-
-#ifndef OPENCV_GAPI_RENDER_ROOT_HPP
-#define OPENCV_GAPI_RENDER_ROOT_HPP
-
-// This file is just a shortcut to render/render.hpp
-
-#include <opencv2/gapi/render/render.hpp>
-
-#endif // OPENCV_GAPI_RENDER_ROOT_HPP
+version https://git-lfs.github.com/spec/v1
+oid sha256:5dadf9cb21fd5f3a571533646d12ed5e434f2028c35ad3e29de0db35e5141e98
+size 460

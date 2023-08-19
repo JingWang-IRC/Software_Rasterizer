@@ -1,11 +1,3 @@
-/// @ref gtx_projection
-/// @file glm/gtx/projection.inl
-
-namespace glm
-{
-	template <typename vecType>
-	GLM_FUNC_QUALIFIER vecType proj(vecType const & x, vecType const & Normal)
-	{
-		return glm::dot(x, Normal) / glm::dot(Normal, Normal) * Normal;
-	}
-}//namespace glm
+version https://git-lfs.github.com/spec/v1
+oid sha256:441c6cb71a6fc2e988d8890dd649eedeeef59fff37cee840caa5d97b9c60dfde
+size 279

@@ -1,20 +1,3 @@
-/// @ref simd
-/// @file glm/simd/experimental.h
-
-#pragma once
-
-#include "platform.h"
-
-#if GLM_ARCH & GLM_ARCH_SSE2_BIT
-
-GLM_FUNC_QUALIFIER glm_vec4 glm_vec1_sqrt_lowp(glm_vec4 x)
-{
-	return _mm_mul_ss(_mm_rsqrt_ss(x), x);
-}
-
-GLM_FUNC_QUALIFIER glm_vec4 glm_vec4_sqrt_lowp(glm_vec4 x)
-{
-	return _mm_mul_ps(_mm_rsqrt_ps(x), x);
-}
-
-#endif//GLM_ARCH & GLM_ARCH_SSE2_BIT
+version https://git-lfs.github.com/spec/v1
+oid sha256:9b368a6eec74d212c803ea07165d49efe1e6bbe79e49bf41b0e66c42e9102285
+size 385

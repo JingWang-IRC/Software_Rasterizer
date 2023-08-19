@@ -1,16 +1,3 @@
-/// @ref gtx_mixed_product
-/// @file glm/gtx/mixed_product.inl
-
-namespace glm
-{
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER T mixedProduct
-	(
-		tvec3<T, P> const & v1,
-		tvec3<T, P> const & v2,
-		tvec3<T, P> const & v3
-	)
-	{
-		return dot(cross(v1, v2), v3);
-	}
-}//namespace glm
+version https://git-lfs.github.com/spec/v1
+oid sha256:2ef9bdaf04286620a770f5531b47a79aa6d9552a3fb6288b0324f963f9e29227
+size 306

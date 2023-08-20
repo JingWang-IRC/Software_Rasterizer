@@ -6,7 +6,7 @@ This project is a software rasterizer including
 3. PCF based soft shadow
 4. Map texture on object
 5. Window system using Windows API
-6. Rendering acceleration by making use of bounding boxes of each triangle mesh\
+6. Rendering acceleration by making use of bounding boxes of each triangle mesh
 
 ## Control:
 WSAD for moving the camera, mouse for the orientation.

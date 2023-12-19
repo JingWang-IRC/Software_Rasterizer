@@ -79,7 +79,6 @@ glm::vec3 sampleTexture(const std::vector<glm::vec3>& depthBuffer, float x, floa
 	return ABCD;
 }
 
-
 std::vector<glm::vec3> cvMatToVector(const cv::Mat input)
 {
 	int height = input.rows;
@@ -98,4 +97,17 @@ std::vector<glm::vec3> cvMatToVector(const cv::Mat input)
 		}
 	}
 	return pRgb;
+}
+
+std::vector<glm::vec3> ConvertBufferR2RGB(const std::vector<float> & input) // input ranges from -1 ~ 1, NDC
+{
+	std::vector<glm::vec3> output;
+	output.reserve(input.size());
+
+	for (auto it = input.begin(); it != input.end(); it++)
+	{
+		output.push_back(glm::vec3( (-*it + 1) / 2 * 255, 0, 0)); // make the depth value negative so red is very close, while black is far away
+	}
+
+	return output;
 }

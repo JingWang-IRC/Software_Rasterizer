@@ -54,16 +54,12 @@ void drawShadowMap(std::vector<float>& depthBuffer, const std::vector<vertex>& v
 
 			if (weight.x >= 0 ) // test depth and if it is inside triangle
 			{
-					float z0 = std::abs(viewPosV0.z) < 0.01f ? (viewPosV0.z >= 0 ? 0.01 : -0.01) : viewPosV0.z; // to avoid project correction whe ninterpolation
-					float z1 = std::abs(viewPosV1.z) < 0.01f ? (viewPosV1.z >= 0 ? 0.01 : -0.01) : viewPosV1.z; // when z is close to zero, bug happens
-					float z2 = std::abs(viewPosV2.z) < 0.01f ? (viewPosV2.z >= 0 ? 0.01 : -0.01) : viewPosV2.z; // this method still cannot perfectly solve it
-					float zp = 1 / (weight.r / z0 + weight.g / z1 + weight.b / z2);
-					float depth = zp;
-				
-				if (depth >= depthBuffer[i * WIDTH + j] && depth <= 0)
+				float depth = weight.r * NDCPosV0.z + weight.g * NDCPosV1.z + weight.b * NDCPosV2.z;
+				if (depth <= depthBuffer[i * WIDTH + j])
 				{
 					depthBuffer[i * WIDTH + j] = depth;
 				}
+
 			}
 		}
 	}
@@ -159,7 +155,7 @@ void drawTriangle(std::vector<glm::vec3>& frameBuffer, std::vector<float>& depth
 									float x = shadowMapPos.x + j / (float)WIDTH;
 									float y = shadowMapPos.y + i / (float)HEIGHT;
 									float shadowMapDepth = sampleTexture(shadowMapBuffer, x, y, WIDTH, HEIGHT);
-									occlusion += lightViewPos.z + 0.15 < shadowMapDepth;
+									occlusion += (lightNDCPos.z - 0.002) > shadowMapDepth; // ths offset to avoid self-occlusion artifact
 									sampleNum++;
 								}
 							}

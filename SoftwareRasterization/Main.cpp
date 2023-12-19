@@ -132,11 +132,9 @@ int main()
 		// clean all the buffer
 		std::fill(frameBuffer.begin(), frameBuffer.end(), glm::vec3(0.0, 0.0, 0.0));
 		std::fill(depthBuffer.begin(), depthBuffer.end(), -1000.0);
-		std::fill(shadowMapBuffer.begin(), shadowMapBuffer.end(), -1000.0);
+		std::fill(shadowMapBuffer.begin(), shadowMapBuffer.end(), 1.0);
 		
-
 		std::vector<std::thread> threads(8);
-
 		
 		// draw shadow map
 		for (int i = 0; i < 4; i++)
@@ -158,7 +156,6 @@ int main()
 
 			threadedDrawShadowMap(shadowMapBuffer, cubeVertices, begin, end, modelMat, viewMatLight, projMatLight);
 		}
-		
 
 		/*
 		for (auto it = groundVertices.begin(); it != groundVertices.end(); it += 3)
@@ -247,7 +244,8 @@ int main()
 			kbhit = 0;
 		}
 
-		presentBuffer(&device, frameBuffer);
+		presentBuffer(&device, frameBuffer); 
+		//presentBuffer(&device, ConvertBufferR2RGB(shadowMapBuffer)); // this line for debugging shadowmap
 		printText(&device, fps);
 		screenUpdate();
 		//Sleep(1); // if no sleep, the fps may be 2000+ when empty

@@ -1,7 +1,5 @@
 #pragma once
 #include <glm.hpp>
-#include <opencv2/opencv.hpp>
-#include <opencv2/core/core.hpp>
 
 float interpolation(float alpha, float beta, float gamma, float att0, float att1, float att2,
 	float z0, float z1, float z2, float zp)
@@ -77,26 +75,6 @@ glm::vec3 sampleTexture(const std::vector<glm::vec3>& depthBuffer, float x, floa
 	glm::vec3 ABCD = (h - floorH) * CD + (floorH + 1 - h) * AB;
 
 	return ABCD;
-}
-
-std::vector<glm::vec3> cvMatToVector(const cv::Mat input)
-{
-	int height = input.rows;
-	int width = input.cols;
-	std::vector<glm::vec3> pRgb;
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++)
-		{
-			float rgb[3];
-			for (int k = 0; k < 3; k++)
-			{
-				rgb[k] = (float)input.at<cv::Vec3b>(i, j)[k] / 255.0;
-			}
-			pRgb.push_back(glm::vec3(rgb[0], rgb[1], rgb[2]));
-		}
-	}
-	return pRgb;
 }
 
 std::vector<glm::vec3> stbiConvertToVector(const unsigned char* input, const int width, const int height, const int channels)

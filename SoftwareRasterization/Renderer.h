@@ -177,6 +177,7 @@ void drawTriangle(std::vector<glm::vec3>& frameBuffer, std::vector<float>& depth
 							glm::vec2 texcoords = interpolation(weight.x, weight.y, weight.z, vertices[0].texcoords, vertices[1].texcoords, vertices[2].texcoords, z0, z1, z2, zp);
 							glm::vec3 albedo = sampleTexture(texAlbedo, texcoords.x, texcoords.y, TEX_WIDTH, TEX_HEIGHT);
 							float specularRate = sampleTexture(texSpecular, texcoords.x, texcoords.y, TEX_WIDTH, TEX_HEIGHT).x;
+							//specularRate = 1; // test specular - to be delete
 
 							glm::vec3 diffuse = glm::vec3(std::max(0.0f, cosineD)) * albedo * light.color;
 							glm::vec3 specular = std::pow(std::max(0.0f, cosineS), 32.0f) * light.color * specularRate;
@@ -190,6 +191,7 @@ void drawTriangle(std::vector<glm::vec3>& frameBuffer, std::vector<float>& depth
 							glm::vec3 ambient = 0.15f * color;
 							finalColor = (diffuse + specular) * (1 - occlusion) + ambient;
 						}
+						finalColor = clamp(finalColor);
 						frameBuffer[i * WIDTH + j] = finalColor * 255.0f;
 						depthBuffer[i * WIDTH + j] = depth;
 					}
@@ -211,5 +213,25 @@ void threadedDrawShadowMap(std::vector<float>& depthBuffer, const std::vector<ve
 	{
 		std::vector<vertex> triangle(it, it + 3);
 		drawShadowMap(depthBuffer, triangle, modelMat, viewMat, projMat);
+	}
+}
+
+void threadedDrawMesh(std::vector<glm::vec3>& frameBuffer, std::vector<float>& depthBuffer, const std::vector<vertex>& vertices,
+	int begin, int end,
+	glm::mat4 modelMat, glm::mat4 viewMat, glm::mat4 projMat,
+	glm::vec3 cameraPos, DirectionalLight light,
+	const std::vector<float>& shadowMapBuffer, glm::mat4 MVMatLight, glm::mat4 MVPMatLight, bool drawShadow,
+	const std::vector<glm::vec3>& texAlbedo, const std::vector<glm::vec3>& texSpecular, bool drawTex,
+	glm::vec3 color, bool pureColor)
+{
+	for (auto it = vertices.begin() + begin; it != vertices.begin() + end; it += 3)
+	{
+		std::vector<vertex> triangle(it, it + 3);
+		drawTriangle(frameBuffer, depthBuffer, triangle,
+			modelMat, viewMat, projMat,
+			cameraPos, light,
+			shadowMapBuffer, MVMatLight, MVPMatLight, drawShadow,
+			texAlbedo, texSpecular, drawTex,
+			color, pureColor);
 	}
 }

@@ -29,7 +29,8 @@ using std::chrono::system_clock;
 #include "Renderer.h"
 #include "Window.h"
 
-
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 int main()
 {
@@ -64,13 +65,16 @@ int main()
 		glm::vec2 texcoords(groundData[i + 6], groundData[i + 7]);
 		groundVertices.push_back(vertex{ pos, normal, texcoords });
 	}
-	
+	 
 	// prepare textures for the cube
-	cv::Mat src = cv::imread("container.png");
-	cv::cvtColor(src, src, cv::COLOR_BGR2RGB); // opencv default is BGR, now change to RGB
-	std::vector<glm::vec3> containerTex = cvMatToVector(src);
-	src = cv::imread("container_specular.png");
-	std::vector<glm::vec3> containerSpecularTex = cvMatToVector(src); // specular texture does not care the order of rgb channel
+	int texWidth, texHeight, texChannels;
+	unsigned char* containerTexData = stbi_load("container.png", &texWidth, &texHeight, &texChannels, 0);
+	std::vector<glm::vec3> containerTex = stbiConvertToVector(containerTexData, texWidth, texHeight, texChannels);
+	stbi_image_free(containerTexData);
+
+	unsigned char* containerSpecularTexData = stbi_load("container_specular.png", &texWidth, &texHeight, &texChannels, 0);
+	std::vector<glm::vec3> containerSpecularTex = stbiConvertToVector(containerSpecularTexData, texWidth, texHeight, texChannels);
+	stbi_image_free(containerSpecularTexData);
 
 	// time for computing fps
 	auto lastFrameTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -144,7 +148,8 @@ int main()
 			int begin = i * quarter;
 			int end = i == 3 ? totalAmount : (i + 1) * quarter;
 
-			threadedDrawShadowMap(shadowMapBuffer, groundVertices, begin, end, modelMat, viewMatLight, projMatLight);
+			//threadedDrawShadowMap(shadowMapBuffer, groundVertices, begin, end, modelMat, viewMatLight, projMatLight);
+			threads[i] = std::thread(threadedDrawShadowMap, std::ref(shadowMapBuffer), std::ref(groundVertices), begin, end, modelMat, viewMatLight, projMatLight);
 		}
 
 		for (int i = 0; i < 4; i++)
@@ -154,7 +159,8 @@ int main()
 			int begin = i * quarter;
 			int end = i == 3 ? totalAmount : (i + 1) * quarter;
 
-			threadedDrawShadowMap(shadowMapBuffer, cubeVertices, begin, end, modelMat, viewMatLight, projMatLight);
+			//threadedDrawShadowMap(shadowMapBuffer, cubeVertices, begin, end, modelMat, viewMatLight, projMatLight);
+			threads[4 + i] = std::thread(threadedDrawShadowMap, std::ref(shadowMapBuffer), std::ref(cubeVertices), begin, end, modelMat, viewMatLight, projMatLight);
 		}
 
 		/*
@@ -169,6 +175,26 @@ int main()
 			drawShadowMap(shadowMapBuffer, triangle, modelMat, viewMatLight, projMatLight);
 		}
 		*/
+
+		for (auto it = threads.begin(); it < threads.end(); it++)
+		{
+			(*it).join();
+		}
+
+		//for (int i = 0; i < 4; i++)
+		//{
+		//	int totalAmount = groundVertices.size();
+		//	int quarter = totalAmount / 4;
+		//	int begin = i * quarter;
+		//	int end = i == 3 ? totalAmount : (i + 1) * quarter;
+		//
+		//	threads[i] = std::thread(threadedDrawMesh, std::ref(frameBuffer), std::ref(shadowMapBuffer), std::ref(groundVertices),
+		//		begin, end,
+		//		modelMat, viewMat, projMat, camera.pos,
+		//		dLight, shadowMapBuffer, MVMatLight, MVPMatLight, true,
+		//		containerTex, containerSpecularTex, false,
+		//		glm::vec3(0.0f, 1.0f, 0.0f), false);
+		//}
 
 		// draw the cube and the ground
 		for (auto it = groundVertices.begin(); it != groundVertices.end(); it += 3)
@@ -201,6 +227,11 @@ int main()
 				containerTex, containerSpecularTex, false,
 				glm::vec3(1.0f, 1.0f, 1.0f), true);
 		}
+
+		//for (auto it = threads.begin(); it < threads.end() - 4; it++)
+		//{
+		//	(*it).join();
+		//}
 
 		// ================================ new window =================================
 
@@ -245,7 +276,7 @@ int main()
 		}
 
 		presentBuffer(&device, frameBuffer); 
-		//presentBuffer(&device, ConvertBufferR2RGB(shadowMapBuffer)); // this line for debugging shadowmap
+		//presentBuffer(&device, convertBufferR2RGB(shadowMapBuffer)); // this line for debugging shadowmap
 		printText(&device, fps);
 		screenUpdate();
 		//Sleep(1); // if no sleep, the fps may be 2000+ when empty

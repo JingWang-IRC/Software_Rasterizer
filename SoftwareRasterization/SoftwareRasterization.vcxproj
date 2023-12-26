@@ -160,6 +160,7 @@
     <ClInclude Include="DataAndSettings.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="Tools.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

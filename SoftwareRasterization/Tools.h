@@ -99,7 +99,25 @@ std::vector<glm::vec3> cvMatToVector(const cv::Mat input)
 	return pRgb;
 }
 
-std::vector<glm::vec3> ConvertBufferR2RGB(const std::vector<float> & input) // input ranges from -1 ~ 1, NDC
+std::vector<glm::vec3> stbiConvertToVector(const unsigned char* input, const int width, const int height, const int channels)
+{
+	std::vector<glm::vec3> pRgb;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			float rgb[3];
+			for (int k = 0; k < 3; k++)
+			{
+				rgb[k] = input[i * width * channels + j * channels + k] / 255.0f;
+			}
+			pRgb.push_back(glm::vec3(rgb[0], rgb[1], rgb[2]));
+		}
+	}
+	return pRgb;
+}
+
+std::vector<glm::vec3> convertBufferR2RGB(const std::vector<float> & input) // input ranges from -1 ~ 1, NDC
 {
 	std::vector<glm::vec3> output;
 	output.reserve(input.size());
@@ -110,4 +128,19 @@ std::vector<glm::vec3> ConvertBufferR2RGB(const std::vector<float> & input) // i
 	}
 
 	return output;
+}
+
+float clamp(float value)
+{
+	if (value >= 0 && value <= 1)
+		return value;
+	else if (value < 0)
+		return 0;
+	else
+		return 1;
+}
+
+glm::vec3 clamp(glm::vec3 value)
+{
+	return glm::vec3(clamp(value.r), clamp(value.g), clamp(value.b));
 }

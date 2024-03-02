@@ -9,6 +9,7 @@
 #include <gtc/type_ptr.hpp>
 #include <gtx/string_cast.hpp>
 #include <thread>
+#include <mutex>
 
 #include <chrono>
 #include <time.h>
@@ -41,7 +42,8 @@ int main()
 	std::vector<glm::vec3> frameBuffer(WIDTH * HEIGHT, glm::vec3(255.0));
 	std::vector<float> depthBuffer(WIDTH * HEIGHT, -1000.0);
 	std::vector<float> shadowMapBuffer(WIDTH * HEIGHT, -1000.0);  // here I can use different resolution, but it is not necessary
-	
+	std::vector<std::mutex> mutexes(WIDTH * HEIGHT);
+
 	// load cube vertices data
 	std::vector<vertex> cubeVertices;
 	for (int i = 0; i < 288; i += 8)
@@ -100,7 +102,9 @@ int main()
 	float fps = 0;
 	long long currentTime = 0;
 	long long lastFPSTime = 0;
+
 	//======================================= new window end =====================================================
+	std::vector<std::thread> threads(8);
 
 	// start rendering
 	while (!shutDowm)
@@ -132,17 +136,14 @@ int main()
 		std::fill(depthBuffer.begin(), depthBuffer.end(), -1000.0);
 		std::fill(shadowMapBuffer.begin(), shadowMapBuffer.end(), 1.0);
 		
-		std::vector<std::thread> threads(8);
-		
-		// draw shadow map
+		// threaded draw shadow map
 		for (int i = 0; i < 4; i++)
 		{
 			int totalAmount = groundVertices.size();
 			int quarter = totalAmount / 4;
 			int begin = i * quarter;
-			int end = i == 3 ? totalAmount : (i + 1) * quarter;
+			int end = i == 3 ? totalAmount : (i + 1) * quarter; // compute the batches for each thread
 
-			//threadedDrawShadowMap(shadowMapBuffer, groundVertices, begin, end, modelMat, viewMatLight, projMatLight);
 			threads[i] = std::thread(threadedDrawShadowMap, std::ref(shadowMapBuffer), std::ref(groundVertices), begin, end, modelMat, viewMatLight, projMatLight);
 		}
 
@@ -151,66 +152,67 @@ int main()
 			int totalAmount = cubeVertices.size();
 			int quarter = totalAmount / 4;
 			int begin = i * quarter;
-			int end = i == 3 ? totalAmount : (i + 1) * quarter;
+			int end = i == 3 ? totalAmount : (i + 1) * quarter; // compute the batches for each thread
 
-			//threadedDrawShadowMap(shadowMapBuffer, cubeVertices, begin, end, modelMat, viewMatLight, projMatLight);
 			threads[4 + i] = std::thread(threadedDrawShadowMap, std::ref(shadowMapBuffer), std::ref(cubeVertices), begin, end, modelMat, viewMatLight, projMatLight);
 		}
-
-		/*
-		for (auto it = groundVertices.begin(); it != groundVertices.end(); it += 3)
-		{
-			std::vector<vertex> triangle(it, it + 3);
-			drawShadowMap(shadowMapBuffer, triangle, modelMat, viewMatLight, projMatLight);
-		}
-		for (auto it = cubeVertices.begin(); it != cubeVertices.end(); it += 3)
-		{
-			std::vector<vertex> triangle(it, it + 3);
-			drawShadowMap(shadowMapBuffer, triangle, modelMat, viewMatLight, projMatLight);
-		}
-		*/
 
 		for (auto it = threads.begin(); it < threads.end(); it++)
 		{
 			(*it).join();
 		}
 
-		//for (int i = 0; i < 4; i++)
+		/*  Not threaded draw shadow map  */
+		//for (auto it = groundVertices.begin(); it != groundVertices.end(); it += 3)
 		//{
-		//	int totalAmount = groundVertices.size();
-		//	int quarter = totalAmount / 4;
-		//	int begin = i * quarter;
-		//	int end = i == 3 ? totalAmount : (i + 1) * quarter;
-		//
-		//	threads[i] = std::thread(threadedDrawMesh, std::ref(frameBuffer), std::ref(shadowMapBuffer), std::ref(groundVertices),
-		//		begin, end,
-		//		modelMat, viewMat, projMat, camera.pos,
-		//		dLight, shadowMapBuffer, MVMatLight, MVPMatLight, true,
-		//		containerTex, containerSpecularTex, false,
-		//		glm::vec3(0.0f, 1.0f, 0.0f), false);
+		//	std::vector<vertex> triangle(it, it + 3);
+		//	drawShadowMap(shadowMapBuffer, triangle, modelMat, viewMatLight, projMatLight);
+		//}
+		//for (auto it = cubeVertices.begin(); it != cubeVertices.end(); it += 3)
+		//{
+		//	std::vector<vertex> triangle(it, it + 3);
+		//	drawShadowMap(shadowMapBuffer, triangle, modelMat, viewMatLight, projMatLight);
 		//}
 
-		// draw the cube and the ground
-		for (auto it = groundVertices.begin(); it != groundVertices.end(); it += 3)
+		// threaded draw ground and cube, 4 threads for the ground and 4 threads for the cube
+		for (int i = 0; i < 4; i++)
 		{
-			std::vector<vertex> triangle(it, it + 3);
-			drawTriangle(frameBuffer, depthBuffer, triangle, 
-				modelMat, viewMat, projMat, camera.pos, 
-				dLight, shadowMapBuffer, MVMatLight, MVPMatLight, true, 
+			int totalAmount = groundVertices.size();
+			int quarter = totalAmount / 4;
+			int begin = i * quarter;
+			int end = i == 3 ? totalAmount : (i + 1) * quarter; // compute the batches for each thread
+		
+			threads[i] = std::thread(threadedDrawMesh, std::ref(frameBuffer), std::ref(depthBuffer), std::ref(groundVertices),
+				begin, end,
+				modelMat, viewMat, projMat, camera.pos,
+				dLight, std::ref(shadowMapBuffer), MVMatLight, MVPMatLight, true,
 				containerTex, containerSpecularTex, false,
-				glm::vec3(0.0f, 1.0f, 0.0f), false);
-		}
-		for (auto it = cubeVertices.begin(); it != cubeVertices.end(); it += 3)
-		{
-			std::vector<vertex> triangle(it, it + 3);
-			drawTriangle(frameBuffer, depthBuffer, triangle, 
-				modelMat, viewMat, projMat, camera.pos, 
-				dLight, shadowMapBuffer, MVMatLight, MVPMatLight, false, 
-				containerTex, containerSpecularTex, true,
-				glm::vec3(1.0f, 0.0f, 0.0f), false);
+				glm::vec3(0.0f, 1.0f, 0.0f), false,
+				std::ref(mutexes));
 		}
 
-		// draw light source
+		for (int i = 0; i < 4; i++)
+		{
+			int totalAmount = cubeVertices.size();
+			int quarter = totalAmount / 4;
+			int begin = i * quarter;
+			int end = i == 3 ? totalAmount : (i + 1) * quarter; // compute the batches for each thread
+		
+			threads[4 + i] = std::thread(threadedDrawMesh, std::ref(frameBuffer), std::ref(depthBuffer), std::ref(cubeVertices),
+				begin, end,
+				modelMat, viewMat, projMat, camera.pos,
+				dLight, std::ref(shadowMapBuffer), MVMatLight, MVPMatLight, true,
+				containerTex, containerSpecularTex, true,
+				glm::vec3(1.0f, 0.0f, 0.0f), false,
+				std::ref(mutexes));
+		}
+
+		for (auto it = threads.begin(); it < threads.end(); it++)
+		{
+			(*it).join();
+		}
+
+		// draw light source (not threaded)
 		modelMat = glm::translate(modelMat, dLight.pos);
 		for (auto it = cubeVertices.begin(); it != cubeVertices.end(); it += 3)
 		{
@@ -219,17 +221,14 @@ int main()
 				modelMat, viewMat, projMat, camera.pos,
 				dLight, shadowMapBuffer, MVMatLight, MVPMatLight, false, 
 				containerTex, containerSpecularTex, false,
-				glm::vec3(1.0f, 1.0f, 1.0f), true);
+				glm::vec3(1.0f, 1.0f, 1.0f), true,
+				mutexes);
 		}
 
-		//for (auto it = threads.begin(); it < threads.end() - 4; it++)
-		//{
-		//	(*it).join();
-		//}
 
 		// ================================ new window =================================
 
-				// calculate time
+		// calculate time
 		currentTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 		FPSRemainder = int(currentTime - gameStartTime) % 500;
 		float timeRate = int(currentTime - gameStartTime) % 1000 / 1000.0f;
@@ -273,7 +272,6 @@ int main()
 		//presentBuffer(&device, convertBufferR2RGB(shadowMapBuffer)); // this line for debugging shadowmap
 		printText(&device, fps);
 		screenUpdate();
-		//Sleep(1); // if no sleep, the fps may be 2000+ when empty
 
 		// get keyboard and cursor input
 		if (GetKeyState('W') & 0x8000) camera.pos += camera.front * camera.MovementSpeed;

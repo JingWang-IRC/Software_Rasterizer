@@ -37,8 +37,8 @@ glm::vec3 scrrenSpaceCenterWeight(const glm::vec2& p, const glm::vec2& v0, const
 
 float sampleTexture(const std::vector<float>& depthBuffer, float x, float y, const int texWidth, const int texHeight)
 {
-	float w = std::min(float(texWidth), std::max(0.0f, x * texWidth));
-	float h = std::min(float(texHeight), std::max(0.0f, texHeight - y * texHeight));
+	float w = std::min(float(texWidth - 1), std::max(0.0f, x * texWidth));
+	float h = std::min(float(texHeight - 1), std::max(0.0f, texHeight - y * texHeight));
 
 	int floorW = std::floor(w);
 	int floorH = std::floor(h);
@@ -58,8 +58,8 @@ float sampleTexture(const std::vector<float>& depthBuffer, float x, float y, con
 
 glm::vec3 sampleTexture(const std::vector<glm::vec3>& depthBuffer, float x, float y, const int texWidth, const int texHeight)
 {
-	float w = std::min(float(texWidth), std::max(0.0f, x * texWidth));
-	float h = std::min(float(texHeight), std::max(0.0f, texHeight - y * texHeight));
+	float w = std::min(float(texWidth - 1), std::max(0.0f, x * texWidth));
+	float h = std::min(float(texHeight - 1), std::max(0.0f, texHeight - y * texHeight));
 
 	int floorW = std::floor(w);
 	int floorH = std::floor(h);

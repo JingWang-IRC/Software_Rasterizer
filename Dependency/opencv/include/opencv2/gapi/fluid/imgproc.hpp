@@ -1,20 +1,3 @@
-// This file is part of OpenCV project.
-// It is subject to the license terms in the LICENSE file found in the top-level directory
-// of this distribution and at http://opencv.org/license.html.
-//
-// Copyright (C) 2018 Intel Corporation
-
-
-#ifndef OPENCV_GAPI_FLUID_IMGPROC_HPP
-#define OPENCV_GAPI_FLUID_IMGPROC_HPP
-
-#include <opencv2/gapi/gkernel.hpp> // GKernelPackage
-#include <opencv2/gapi/own/exports.hpp> // GAPI_EXPORTS
-
-namespace cv { namespace gapi { namespace imgproc { namespace fluid {
-
-GAPI_EXPORTS GKernelPackage kernels();
-
-}}}}
-
-#endif // OPENCV_GAPI_FLUID_IMGPROC_HPP
+version https://git-lfs.github.com/spec/v1
+oid sha256:6016023021cebea9a496edc56621ab17ccc0fd2c8176951156e84dbac8db5c60
+size 604

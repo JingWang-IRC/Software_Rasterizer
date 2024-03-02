@@ -1,18 +1,3 @@
-/// @ref gtx_log_base
-/// @file glm/gtx/log_base.inl
-
-namespace glm
-{
-	template <typename genType> 
-	GLM_FUNC_QUALIFIER genType log(genType const & x, genType const & base)
-	{
-		assert(x != genType(0));
-		return glm::log(x) / glm::log(base);
-	}
-
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> log(vecType<T, P> const & x, vecType<T, P> const & base)
-	{
-		return glm::log(x) / glm::log(base);
-	}
-}//namespace glm
+version https://git-lfs.github.com/spec/v1
+oid sha256:5e74bccedb8e16618897be0ec2a08a2a710fbe54678c381c72d9087a7a414b26
+size 499

@@ -1,31 +1,3 @@
-/// @ref core
-/// @file glm/mat3x2.hpp
-
-#pragma once
-
-#include "detail/type_mat3x2.hpp"
-
-namespace glm
-{
-	/// 3 columns of 2 components matrix of low precision floating-point numbers.
-	/// There is no guarantee on the actual precision.
-	///
-	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.1.6 Matrices</a>
-	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.7.2 Precision Qualifier</a>
-	typedef tmat3x2<float, lowp>		lowp_mat3x2;
-	
-	/// 3 columns of 2 components matrix of medium precision floating-point numbers.
-	/// There is no guarantee on the actual precision.
-	///
-	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.1.6 Matrices</a>
-	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.7.2 Precision Qualifier</a>
-	typedef tmat3x2<float, mediump>		mediump_mat3x2;
-	
-	/// 3 columns of 2 components matrix of high precision floating-point numbers.
-	/// There is no guarantee on the actual precision.
-	///
-	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.1.6 Matrices</a>
-	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 4.7.2 Precision Qualifier</a>
-	typedef tmat3x2<float, highp>		highp_mat3x2;
-
-}//namespace
+version https://git-lfs.github.com/spec/v1
+oid sha256:8ce7239a943f6f0786a09d7d3c3fc6e0e7f8f81a097d584121de46fd4d2e5601
+size 1531

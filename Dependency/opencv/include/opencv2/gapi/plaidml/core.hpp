@@ -1,20 +1,3 @@
-// This file is part of OpenCV project.
-// It is subject to the license terms in the LICENSE file found in the top-level directory
-// of this distribution and at http://opencv.org/license.html.
-//
-// Copyright (C) 2019 Intel Corporation
-
-
-#ifndef OPENCV_GAPI_PLAIDML_CORE_HPP
-#define OPENCV_GAPI_PLAIDML_CORE_HPP
-
-#include <opencv2/gapi/gkernel.hpp>     // GKernelPackage
-#include <opencv2/gapi/own/exports.hpp> // GAPI_EXPORTS
-
-namespace cv { namespace gapi { namespace core { namespace plaidml {
-
-GAPI_EXPORTS cv::gapi::GKernelPackage kernels();
-
-}}}}
-
-#endif // OPENCV_GAPI_PLAIDML_CORE_HPP
+version https://git-lfs.github.com/spec/v1
+oid sha256:317bc285e78bb269a7819a22c4269f45ccf086790e066278d078aaa37774e1aa
+size 614

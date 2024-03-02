@@ -1,27 +1,3 @@
-// This file is part of OpenCV project.
-// It is subject to the license terms in the LICENSE file found in the top-level directory
-// of this distribution and at http://opencv.org/license.html.
-//
-// Copyright (C) 2018 Intel Corporation
-
-
-#ifndef OPENCV_GAPI_CPU_IMGPROC_API_HPP
-#define OPENCV_GAPI_CPU_IMGPROC_API_HPP
-
-#include <opencv2/core/cvdef.h>     // GAPI_EXPORTS
-#include <opencv2/gapi/gkernel.hpp> // GKernelPackage
-
-namespace cv {
-namespace gapi {
-namespace imgproc {
-namespace cpu {
-
-GAPI_EXPORTS GKernelPackage kernels();
-
-} // namespace cpu
-} // namespace imgproc
-} // namespace gapi
-} // namespace cv
-
-
-#endif // OPENCV_GAPI_CPU_IMGPROC_API_HPP
+version https://git-lfs.github.com/spec/v1
+oid sha256:6f383c11c87a05429ab6bbe70566280ca3e7e96208791e63a38ff3d072917793
+size 687

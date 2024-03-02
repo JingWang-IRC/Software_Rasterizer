@@ -1,15 +1,3 @@
-/// @ref gtx_perpendicular
-/// @file glm/gtx/perpendicular.inl
-
-namespace glm
-{
-	template <typename vecType> 
-	GLM_FUNC_QUALIFIER vecType perp
-	(
-		vecType const & x, 
-		vecType const & Normal
-	)
-	{
-		return x - proj(x, Normal);
-	}
-}//namespace glm
+version https://git-lfs.github.com/spec/v1
+oid sha256:839ae88f197c60419de33046d59979fbf2ec308c118046241725bbc78d0fb65e
+size 264

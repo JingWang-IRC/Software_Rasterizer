@@ -1,17 +1,3 @@
-/// @ref gtx_normalize_dot
-/// @file glm/gtx/normalize_dot.inl
-
-namespace glm
-{
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER T normalizeDot(vecType<T, P> const & x, vecType<T, P> const & y)
-	{
-		return glm::dot(x, y) * glm::inversesqrt(glm::dot(x, x) * glm::dot(y, y));
-	}
-
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER T fastNormalizeDot(vecType<T, P> const & x, vecType<T, P> const & y)
-	{
-		return glm::dot(x, y) * glm::fastInverseSqrt(glm::dot(x, x) * glm::dot(y, y));
-	}
-}//namespace glm
+version https://git-lfs.github.com/spec/v1
+oid sha256:f87bcc815865bcd7cc22788af48074f7a5f36bd233f794a8e8ef9f499f90fa66
+size 623

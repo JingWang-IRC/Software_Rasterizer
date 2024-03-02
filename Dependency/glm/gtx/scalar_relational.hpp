@@ -1,32 +1,3 @@
-/// @ref gtx_scalar_relational
-/// @file glm/gtx/scalar_relational.hpp
-///
-/// @see core (dependence)
-///
-/// @defgroup gtx_scalar_relational GLM_GTX_scalar_relational
-/// @ingroup gtx
-///
-/// @brief Extend a position from a source to a position at a defined length.
-///
-/// <glm/gtx/scalar_relational.hpp> need to be included to use these functionalities.
-
-#pragma once
-
-// Dependency:
-#include "../glm.hpp"
-
-#if GLM_MESSAGES == GLM_MESSAGES_ENABLED && !defined(GLM_EXT_INCLUDED)
-#	pragma message("GLM: GLM_GTX_extend extension included")
-#endif
-
-namespace glm
-{
-	/// @addtogroup gtx_scalar_relational
-	/// @{
-
-
-
-	/// @}
-}//namespace glm
-
-#include "scalar_relational.inl"
+version https://git-lfs.github.com/spec/v1
+oid sha256:88d2b79d4f5818e0038069b0d2006b55cd3521683bfbd25e14d0f8096dcd0459
+size 705

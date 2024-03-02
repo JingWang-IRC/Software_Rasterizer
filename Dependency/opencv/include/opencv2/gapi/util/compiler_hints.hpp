@@ -1,19 +1,3 @@
-// This file is part of OpenCV project.
-// It is subject to the license terms in the LICENSE file found in the top-level directory
-// of this distribution and at http://opencv.org/license.html.
-//
-// Copyright (C) 2018 Intel Corporation
-
-#ifndef OPENCV_GAPI_UTIL_COMPILER_HINTS_HPP
-#define OPENCV_GAPI_UTIL_COMPILER_HINTS_HPP
-
-namespace cv
-{
-namespace util
-{
-    //! Utility template function to prevent "unused" warnings by various compilers.
-    template<typename T> void suppress_unused_warning( const T& ) {}
-} // namespace util
-} // namespace cv
-
-#endif /* OPENCV_GAPI_UTIL_COMPILER_HINTS_HPP */
+version https://git-lfs.github.com/spec/v1
+oid sha256:2973d42a7fe18f0478b482f3f5cd2fc617ce7c7b71b0298e1de3246f90077902
+size 620
